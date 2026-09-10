@@ -2,99 +2,383 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111218">
 <title>Ei — eiii_eiii</title>
+
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;color:#f2f3f5;background:#090a0f;overflow:hidden}
-#bg{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3}
-.shade{position:fixed;inset:0;background:rgba(5,6,12,.56);backdrop-filter:blur(2px);z-index:-2}
-.glow{position:fixed;inset:0;background:radial-gradient(circle at 50% 45%,rgba(91,76,190,.18),transparent 55%);z-index:-1;pointer-events:none}
-.app{width:min(1120px,94vw);height:min(720px,92vh);margin:auto;position:relative;top:4vh;display:grid;grid-template-columns:250px 1fr 330px;background:rgba(24,25,31,.91);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;box-shadow:0 25px 90px rgba(0,0,0,.65)}
-.panel{background:rgba(30,31,37,.82);border-right:1px solid rgba(255,255,255,.07);padding:22px 16px;overflow:auto}
-.center{overflow:auto;background:rgba(20,21,26,.65)}
-.right{padding:20px 16px;overflow:auto;background:rgba(31,32,38,.76)}
-.windowbar{height:42px;display:flex;justify-content:flex-end;align-items:center;gap:18px;padding:0 14px;color:#aeb2bb;background:rgba(15,16,20,.82)}
-.title{font-size:13px;color:#f2f3f5;margin-bottom:22px}
-.label{font-size:11px;text-transform:uppercase;color:#aeb2bb;margin:18px 0 9px}
-.nameplate{height:50px;border-radius:9px;background:rgba(80,82,92,.35);display:flex;align-items:center;padding:7px;gap:10px}
-.mini-avatar{width:36px;height:36px;border-radius:8px;object-fit:cover}
-.fake-edit{margin-left:auto;color:#bbb}
-.big-banner{height:125px;background:linear-gradient(120deg,#222d78,#171923);position:relative}
-.profile-content{padding:0 28px 28px}
-.avatar{width:104px;height:104px;border-radius:50%;border:6px solid #202126;object-fit:cover;margin-top:-48px;position:relative;background:#111}
-.online{position:absolute;margin-left:-25px;margin-top:26px;width:16px;height:16px;background:#23a559;border:3px solid #202126;border-radius:50%}
-h1{font-size:28px;margin:10px 0 3px}
-.username{color:#aeb2bb;font-size:14px}
-.badges{display:flex;gap:8px;margin:13px 0}.badge{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#2b2d31}
-.btn{display:inline-block;margin:7px 5px 0 0;padding:8px 14px;border-radius:7px;background:#5865f2;color:white;font-size:12px;text-decoration:none}
-.section{margin-top:23px}.section h2{font-size:11px;text-transform:uppercase;color:#aeb2bb;margin:0 0 8px}.section p{font-size:13px;line-height:1.55;margin:0;color:#e0e1e5}
-.connection{padding:7px 0;color:#ddd;font-size:13px}.connection span{color:#999}
-.card{background:rgba(45,46,53,.74);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:15px;margin-bottom:12px}
-.card h3{font-size:14px;margin:0 0 4px}.muted{font-size:11px;color:#9da1aa}
-.game{display:flex;gap:12px;align-items:center;margin-top:13px}.game img{width:64px;height:64px;border-radius:8px;object-fit:cover}.game b{font-size:13px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.stat b{display:block;font-size:16px}.stat span{font-size:9px;color:#999}
-.music{position:absolute;left:16px;bottom:14px;width:calc(100% - 32px);max-width:430px;background:rgba(18,19,24,.92);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:12px}.disc{width:40px;height:40px;border-radius:50%;background:#333;display:grid;place-items:center}.music b{font-size:12px}.music small{display:block;color:#999;margin-top:3px}
-audio{width:100px;height:28px;margin-left:auto}
-@media(max-width:900px){.app{grid-template-columns:1fr;height:90vh}.panel,.right{display:none}.center{display:block}.music{max-width:none}.profile-content{padding:0 20px 90px}.big-banner{height:115px}}
+html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;color:#f5f5f7}
+body{overflow:hidden;background:#090a0f}
+
+#background{
+ position:fixed;
+ inset:0;
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ z-index:-3;
+}
+.overlay{
+ position:fixed;
+ inset:0;
+ z-index:-2;
+ background:linear-gradient(135deg,rgba(5,6,12,.68),rgba(12,10,22,.48),rgba(5,6,12,.70));
+}
+.blur{
+ position:fixed;
+ inset:0;
+ z-index:-1;
+ backdrop-filter:blur(2px);
+ pointer-events:none;
+}
+
+.app{
+ position:relative;
+ width:min(1120px,94vw);
+ height:min(720px,92vh);
+ margin:4vh auto 0;
+ display:grid;
+ grid-template-columns:235px minmax(0,1fr) 310px;
+ background:rgba(24,25,31,.86);
+ border:1px solid rgba(255,255,255,.10);
+ border-radius:14px;
+ overflow:hidden;
+ box-shadow:0 30px 100px rgba(0,0,0,.68);
+}
+
+.windowbar{
+ height:43px;
+ display:flex;
+ align-items:center;
+ justify-content:flex-end;
+ gap:17px;
+ padding:0 15px;
+ color:#aeb1ba;
+ background:rgba(13,14,18,.78);
+ font-size:17px;
+}
+
+.left,.right{
+ overflow:auto;
+ padding:18px 15px 80px;
+ background:rgba(31,32,38,.68);
+}
+.left{border-right:1px solid rgba(255,255,255,.07)}
+.right{border-left:1px solid rgba(255,255,255,.07)}
+.center{min-width:0;overflow:auto}
+
+.label{
+ margin:17px 3px 8px;
+ color:#aeb1ba;
+ font-size:10px;
+ font-weight:700;
+ letter-spacing:.8px;
+ text-transform:uppercase;
+}
+.smallcard{
+ display:flex;
+ align-items:center;
+ gap:9px;
+ min-height:46px;
+ padding:7px 9px;
+ border-radius:8px;
+ background:rgba(70,71,79,.30);
+ color:#dddfe4;
+ font-size:12px;
+}
+.smallavatar{
+ width:32px;height:32px;border-radius:7px;object-fit:cover;
+}
+.fake{margin-left:auto;color:#aaa}
+
+.banner{
+ height:135px;
+ background:linear-gradient(120deg,rgba(67,54,139,.72),rgba(19,21,40,.80));
+}
+
+.profile{
+ padding:0 27px 90px;
+ position:relative;
+}
+.avatar{
+ width:104px;height:104px;
+ margin-top:-50px;
+ border:6px solid #202126;
+ border-radius:50%;
+ object-fit:cover;
+ display:block;
+ position:relative;
+ background:#191a1f;
+}
+.status-dot{
+ position:absolute;
+ top:36px;
+ left:102px;
+ width:18px;height:18px;
+ border:4px solid #202126;
+ border-radius:50%;
+ background:#23a559;
+}
+h1{font-size:30px;margin:10px 0 2px}
+.username{font-size:14px;color:#aeb1ba}
+
+.badges{display:flex;gap:7px;margin:12px 0}
+.badge{
+ width:27px;height:27px;border-radius:7px;
+ display:grid;place-items:center;
+ background:#303137;
+ color:#f0b9ff;
+}
+
+.section{margin-top:23px}
+.section-title{
+ margin-bottom:8px;
+ color:#aeb1ba;
+ font-size:10px;
+ font-weight:700;
+ letter-spacing:.8px;
+ text-transform:uppercase;
+}
+.section-text{font-size:13px;line-height:1.6;color:#e0e1e5}
+
+.button{
+ display:inline-block;
+ margin:7px 5px 0 0;
+ padding:8px 13px;
+ border-radius:7px;
+ background:#5865f2;
+ color:#fff;
+ text-decoration:none;
+ font-size:12px;
+}
+.button.secondary{background:#303136}
+
+.connection{
+ padding:8px 0;
+ border-bottom:1px solid rgba(255,255,255,.04);
+ font-size:12px;
+ color:#ddd;
+}
+.connection span{color:#8e929b}
+
+.card{
+ padding:14px;
+ margin-bottom:12px;
+ border:1px solid rgba(255,255,255,.06);
+ border-radius:11px;
+ background:rgba(48,49,57,.64);
+}
+.card h2{margin:0 0 4px;font-size:14px}
+.muted{font-size:11px;color:#969aa3}
+
+.game{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ margin-top:13px;
+}
+.game-icon{
+ width:52px;height:52px;border-radius:8px;
+ object-fit:cover;
+ background:#202126;
+}
+.game-name{font-size:12px;font-weight:700}
+.game-sub{font-size:10px;color:#969aa3;margin-top:4px}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ margin-top:14px;
+}
+.stat{
+ padding:9px 5px;
+ border-radius:8px;
+ background:rgba(20,21,25,.35);
+ text-align:center;
+}
+.stat b{display:block;font-size:16px}
+.stat span{display:block;margin-top:3px;font-size:8px;color:#8f939c}
+
+.music{
+ position:absolute;
+ left:15px;right:15px;bottom:13px;
+ min-height:58px;
+ display:flex;
+ align-items:center;
+ gap:11px;
+ padding:9px 12px;
+ border:1px solid rgba(255,255,255,.08);
+ border-radius:11px;
+ background:rgba(12,13,17,.91);
+ backdrop-filter:blur(12px);
+}
+.music-icon{
+ width:38px;height:38px;border-radius:50%;
+ display:grid;place-items:center;
+ background:#292a31;
+ font-size:18px;
+}
+.music-text{min-width:0}
+.music-text b{font-size:11px}
+.music-text small{display:block;color:#8f939c;margin-top:3px;font-size:9px}
+.music audio{margin-left:auto;width:120px;height:28px}
+
+@media(max-width:900px){
+ .app{grid-template-columns:1fr;width:96vw;height:92vh;margin-top:3vh}
+ .left,.right{display:none}
+ .profile{padding-left:20px;padding-right:20px}
+ .music{left:10px;right:10px}
+ .music audio{width:95px}
+}
 </style>
 </head>
+
 <body>
-<video id="bg" autoplay muted loop playsinline>
-  <source src="assets/background.mp4" type="video/mp4">
+
+<!-- Your existing GitHub file is used directly: background.mp4 -->
+<video id="background" autoplay muted loop playsinline>
+    <source src="background.mp4" type="video/mp4">
 </video>
-<div class="shade"></div><div class="glow"></div>
+<div class="overlay"></div>
+<div class="blur"></div>
 
-<main class="app">
-  <aside class="panel">
-    <div class="title">Main Profile⌄</div>
-    <div class="label">Nameplate</div>
-    <div class="nameplate"><img class="mini-avatar" src="assets/avatar.jpg"><span>Ei</span><span class="fake-edit">✎</span></div>
-    <div class="label">Avatar & Decoration</div>
-    <div class="nameplate"><img class="mini-avatar" src="assets/avatar.jpg"><span>Ei</span></div>
-    <div class="label">Banner Color</div>
-    <div class="nameplate">✦ <span style="color:#8e8fff">Ei</span></div>
-    <div class="label">Profile Effect & Frame</div>
-    <div class="nameplate">◈ &nbsp; ✦ &nbsp; ⊕</div>
-    <div class="label">Display Name Style</div>
-    <div class="nameplate" style="justify-content:center;font-size:20px">Ei</div>
-  </aside>
+<div class="app">
 
-  <section class="center">
-    <div class="windowbar"><span>+</span><span>−</span><span>□</span><span>×</span></div>
-    <div class="big-banner"></div>
-    <div class="profile-content">
-      <img class="avatar" src="assets/avatar.jpg"><span class="online"></span>
-      <h1>Ei</h1>
-      <div class="username">eiii_eiii　•　Add pronouns　•　🌊 WUWA</div>
-      <div class="badges"><div class="badge">✦</div><div class="badge">◈</div><div class="badge">◉</div><div class="badge">✧</div></div>
-      <a class="btn" href="#">☁ Message</a><a class="btn" href="#">♟</a><a class="btn" href="#">•••</a>
+    <!-- LEFT SIDE -->
+    <aside class="left">
+        <div class="label">Profile</div>
+        <div class="smallcard">
+            <img src="avatar.jpg" class="smallavatar" alt="Ei">
+            <span>Ei</span>
+            <span class="fake">✎</span>
+        </div>
 
-      <div class="section"><h2>Bio</h2><p>WuWa SEA server ID: 906329345</p></div>
-      <div class="section"><h2>Member Since</h2><p>Sep 16, 2021</p></div>
-      <div class="section"><h2>Connections</h2>
-        <div class="connection">◉　Ei</div>
-        <div class="connection">🟢　Ei ↗</div>
-        <div class="connection">ⓧ　kurogame_shinigami ↗</div>
-        <div class="connection">◉　eiiizzzz ↗</div>
-        <div class="connection">▶　Ei ↗</div>
-      </div>
+        <div class="label">Avatar & Decoration</div>
+        <div class="smallcard">
+            <img src="avatar.jpg" class="smallavatar" alt="">
+            <span>Ei</span>
+        </div>
+
+        <div class="label">Profile Effect</div>
+        <div class="smallcard">✦ &nbsp; Neon profile</div>
+
+        <div class="label">Display Name</div>
+        <div class="smallcard" style="justify-content:center;font-size:19px">Ei</div>
+
+        <div class="label">Status</div>
+        <div class="smallcard">🟢 &nbsp; Online</div>
+    </aside>
+
+    <!-- CENTER -->
+    <main class="center">
+        <div class="windowbar">
+            <span>+</span>
+            <span>−</span>
+            <span>□</span>
+            <span>×</span>
+        </div>
+
+        <div class="banner"></div>
+
+        <section class="profile">
+            <img src="avatar.jpg" class="avatar" alt="Ei profile picture">
+            <span class="status-dot"></span>
+
+            <h1>Ei</h1>
+            <div class="username">eiii_eiii</div>
+
+            <div class="badges">
+                <div class="badge">✦</div>
+                <div class="badge">♡</div>
+                <div class="badge">◈</div>
+                <div class="badge">✧</div>
+            </div>
+
+            <a class="button" href="#">☁ Message</a>
+            <a class="button secondary" href="#">•••</a>
+
+            <div class="section">
+                <div class="section-title">About Me</div>
+                <div class="section-text">
+                    WuWa SEA server ID: 906329345
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Member Since</div>
+                <div class="section-text">
+                    Sep 16, 2021
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Connections</div>
+                <div class="connection">◉ &nbsp; Ei</div>
+                <div class="connection">🟢 &nbsp; Ei <span>↗</span></div>
+                <div class="connection">◉ &nbsp; kurogame_shinigami <span>↗</span></div>
+                <div class="connection">◉ &nbsp; eiiizzzz <span>↗</span></div>
+                <div class="connection">▶ &nbsp; Ei <span>↗</span></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- RIGHT SIDE -->
+    <aside class="right">
+        <div class="windowbar" style="margin:-18px -15px 15px">
+            Activity&nbsp;&nbsp; Wishlist&nbsp;&nbsp; ×
+        </div>
+
+        <div class="card">
+            <h2>Games I Like</h2>
+            <div class="muted">Games Ei plays</div>
+
+            <div class="game">
+                <img src="avatar.jpg" class="game-icon" alt="">
+                <div>
+                    <div class="game-name">Wuthering Waves</div>
+                    <div class="game-sub">Favorite game</div>
+                </div>
+            </div>
+
+            <div class="game">
+                <img src="avatar.jpg" class="game-icon" alt="">
+                <div>
+                    <div class="game-name">Punishing: Gray Raven</div>
+                    <div class="game-sub">Also playing</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Wuthering Waves</h2>
+            <div class="muted">SEA Server · Ei</div>
+
+            <div class="stats">
+                <div class="stat"><b>80</b><span>UNION LEVEL</span></div>
+                <div class="stat"><b>29</b><span>RESONATORS</span></div>
+                <div class="stat"><b>765</b><span>ACHIEVEMENTS</span></div>
+                <div class="stat"><b>708</b><span>ECHOES</span></div>
+                <div class="stat"><b>356</b><span>LOGIN DAYS</span></div>
+                <div class="stat"><b>30</b><span>DATA BANK</span></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MUSIC -->
+    <div class="music">
+        <div class="music-icon">♫</div>
+        <div class="music-text">
+            <b>Ei's music</b>
+            <small>Add your song later</small>
+        </div>
+        <audio controls loop>
+            <!-- Add music.mp3 later if you want -->
+        </audio>
     </div>
-  </section>
 
-  <aside class="right">
-    <div class="windowbar" style="margin:-20px -16px 15px">Board　　Activity　　Wishlist　　×</div>
-    <div class="card"><h3>Games I Like</h3><div class="muted">Wuthering Waves · Punishing: Gray Raven</div>
-      <div class="game"><img src="assets/avatar.jpg"><div><b>Wuthering Waves</b><br><span class="muted">Favorite game</span></div></div>
-      <div class="game"><img src="assets/avatar.jpg"><div><b>Punishing: Gray Raven</b><br><span class="muted">Also playing</span></div></div>
-    </div>
-    <div class="card"><h3>Favorite Game</h3><div class="game"><img src="assets/avatar.jpg"><div><b>Wuthering Waves</b><br><span class="muted">Let everyone know why this is your favorite.</span></div></div></div>
-    <div class="card"><h3>Wuthering Waves</h3><div class="muted">Ei · Server: SEA</div>
-      <div class="stats"><div class="stat"><b>80</b><span>UNION LEVEL</span></div><div class="stat"><b>29</b><span>RESONATORS</span></div><div class="stat"><b>765</b><span>ACHIEVEMENTS</span></div><div class="stat"><b>708</b><span>ECHOES</span></div><div class="stat"><b>356</b><span>LOGIN DAYS</span></div><div class="stat"><b>30</b><span>DATA BANK</span></div></div>
-    </div>
-  </aside>
+</div>
 
-  <div class="music"><div class="disc">♫</div><div><b>Ei's music</b><small>Add your song later</small></div><audio controls loop><source src="assets/music.mp3" type="audio/mpeg"></audio></div>
-</main>
 </body>
 </html>
