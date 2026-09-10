@@ -2,157 +2,99 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Ei — Profile</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Ei — eiii_eiii</title>
 <style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    color: #fff;
-    background:
-        radial-gradient(circle at top left, #39205f, transparent 45%),
-        radial-gradient(circle at bottom right, #182b55, transparent 45%),
-        #101116;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.window {
-    width: 100%;
-    max-width: 850px;
-    min-height: 560px;
-    background: rgba(25, 26, 32, 0.94);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 25px 80px rgba(0,0,0,.65);
-}
-
-.topbar {
-    height: 45px;
-    background: rgba(15,16,20,.95);
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 18px;
-    padding: 0 18px;
-    color: #aaa;
-    font-size: 18px;
-}
-
-.profile {
-    padding: 35px;
-}
-
-.avatar {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    background: linear-gradient(135deg,#5865f2,#b45cff);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 45px;
-    font-weight: bold;
-    margin-bottom: 18px;
-}
-
-h1 {
-    margin: 0;
-    font-size: 34px;
-}
-
-.username {
-    color: #a9adb5;
-    margin-top: 5px;
-    font-size: 16px;
-}
-
-.status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 15px;
-}
-
-.online {
-    width: 11px;
-    height: 11px;
-    background: #23a559;
-    border-radius: 50%;
-}
-
-.section {
-    margin-top: 28px;
-}
-
-.section-title {
-    color: #b5bac1;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-}
-
-.bio {
-    color: #ddd;
-    line-height: 1.6;
-}
-
-.badges {
-    font-size: 25px;
-    letter-spacing: 6px;
-}
-
-.games {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.game {
-    padding: 9px 13px;
-    border-radius: 8px;
-    background: #2b2d31;
-    color: #ddd;
-}
-
-.links a {
-    color: #8ea1ff;
-    text-decoration: none;
-    margin-right: 15px;
-}
-
-.links a:hover {
-    text-decoration: underline;
-}
-
-.footer {
-    margin-top: 35px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,.08);
-    color: #777;
-    font-size: 13px;
-}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;color:#f2f3f5;background:#090a0f;overflow:hidden}
+#bg{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3}
+.shade{position:fixed;inset:0;background:rgba(5,6,12,.56);backdrop-filter:blur(2px);z-index:-2}
+.glow{position:fixed;inset:0;background:radial-gradient(circle at 50% 45%,rgba(91,76,190,.18),transparent 55%);z-index:-1;pointer-events:none}
+.app{width:min(1120px,94vw);height:min(720px,92vh);margin:auto;position:relative;top:4vh;display:grid;grid-template-columns:250px 1fr 330px;background:rgba(24,25,31,.91);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;box-shadow:0 25px 90px rgba(0,0,0,.65)}
+.panel{background:rgba(30,31,37,.82);border-right:1px solid rgba(255,255,255,.07);padding:22px 16px;overflow:auto}
+.center{overflow:auto;background:rgba(20,21,26,.65)}
+.right{padding:20px 16px;overflow:auto;background:rgba(31,32,38,.76)}
+.windowbar{height:42px;display:flex;justify-content:flex-end;align-items:center;gap:18px;padding:0 14px;color:#aeb2bb;background:rgba(15,16,20,.82)}
+.title{font-size:13px;color:#f2f3f5;margin-bottom:22px}
+.label{font-size:11px;text-transform:uppercase;color:#aeb2bb;margin:18px 0 9px}
+.nameplate{height:50px;border-radius:9px;background:rgba(80,82,92,.35);display:flex;align-items:center;padding:7px;gap:10px}
+.mini-avatar{width:36px;height:36px;border-radius:8px;object-fit:cover}
+.fake-edit{margin-left:auto;color:#bbb}
+.big-banner{height:125px;background:linear-gradient(120deg,#222d78,#171923);position:relative}
+.profile-content{padding:0 28px 28px}
+.avatar{width:104px;height:104px;border-radius:50%;border:6px solid #202126;object-fit:cover;margin-top:-48px;position:relative;background:#111}
+.online{position:absolute;margin-left:-25px;margin-top:26px;width:16px;height:16px;background:#23a559;border:3px solid #202126;border-radius:50%}
+h1{font-size:28px;margin:10px 0 3px}
+.username{color:#aeb2bb;font-size:14px}
+.badges{display:flex;gap:8px;margin:13px 0}.badge{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#2b2d31}
+.btn{display:inline-block;margin:7px 5px 0 0;padding:8px 14px;border-radius:7px;background:#5865f2;color:white;font-size:12px;text-decoration:none}
+.section{margin-top:23px}.section h2{font-size:11px;text-transform:uppercase;color:#aeb2bb;margin:0 0 8px}.section p{font-size:13px;line-height:1.55;margin:0;color:#e0e1e5}
+.connection{padding:7px 0;color:#ddd;font-size:13px}.connection span{color:#999}
+.card{background:rgba(45,46,53,.74);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:15px;margin-bottom:12px}
+.card h3{font-size:14px;margin:0 0 4px}.muted{font-size:11px;color:#9da1aa}
+.game{display:flex;gap:12px;align-items:center;margin-top:13px}.game img{width:64px;height:64px;border-radius:8px;object-fit:cover}.game b{font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.stat b{display:block;font-size:16px}.stat span{font-size:9px;color:#999}
+.music{position:absolute;left:16px;bottom:14px;width:calc(100% - 32px);max-width:430px;background:rgba(18,19,24,.92);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:12px}.disc{width:40px;height:40px;border-radius:50%;background:#333;display:grid;place-items:center}.music b{font-size:12px}.music small{display:block;color:#999;margin-top:3px}
+audio{width:100px;height:28px;margin-left:auto}
+@media(max-width:900px){.app{grid-template-columns:1fr;height:90vh}.panel,.right{display:none}.center{display:block}.music{max-width:none}.profile-content{padding:0 20px 90px}.big-banner{height:115px}}
 </style>
 </head>
-
 <body>
+<video id="bg" autoplay muted loop playsinline>
+  <source src="assets/background.mp4" type="video/mp4">
+</video>
+<div class="shade"></div><div class="glow"></div>
 
-<div class="window">
+<main class="app">
+  <aside class="panel">
+    <div class="title">Main Profile⌄</div>
+    <div class="label">Nameplate</div>
+    <div class="nameplate"><img class="mini-avatar" src="assets/avatar.jpg"><span>Ei</span><span class="fake-edit">✎</span></div>
+    <div class="label">Avatar & Decoration</div>
+    <div class="nameplate"><img class="mini-avatar" src="assets/avatar.jpg"><span>Ei</span></div>
+    <div class="label">Banner Color</div>
+    <div class="nameplate">✦ <span style="color:#8e8fff">Ei</span></div>
+    <div class="label">Profile Effect & Frame</div>
+    <div class="nameplate">◈ &nbsp; ✦ &nbsp; ⊕</div>
+    <div class="label">Display Name Style</div>
+    <div class="nameplate" style="justify-content:center;font-size:20px">Ei</div>
+  </aside>
 
-    <div class="topbar">
-        <span>+</span>
-        <span>−</span>
-        <span>□</span>
-        <span>
+  <section class="center">
+    <div class="windowbar"><span>+</span><span>−</span><span>□</span><span>×</span></div>
+    <div class="big-banner"></div>
+    <div class="profile-content">
+      <img class="avatar" src="assets/avatar.jpg"><span class="online"></span>
+      <h1>Ei</h1>
+      <div class="username">eiii_eiii　•　Add pronouns　•　🌊 WUWA</div>
+      <div class="badges"><div class="badge">✦</div><div class="badge">◈</div><div class="badge">◉</div><div class="badge">✧</div></div>
+      <a class="btn" href="#">☁ Message</a><a class="btn" href="#">♟</a><a class="btn" href="#">•••</a>
+
+      <div class="section"><h2>Bio</h2><p>WuWa SEA server ID: 906329345</p></div>
+      <div class="section"><h2>Member Since</h2><p>Sep 16, 2021</p></div>
+      <div class="section"><h2>Connections</h2>
+        <div class="connection">◉　Ei</div>
+        <div class="connection">🟢　Ei ↗</div>
+        <div class="connection">ⓧ　kurogame_shinigami ↗</div>
+        <div class="connection">◉　eiiizzzz ↗</div>
+        <div class="connection">▶　Ei ↗</div>
+      </div>
+    </div>
+  </section>
+
+  <aside class="right">
+    <div class="windowbar" style="margin:-20px -16px 15px">Board　　Activity　　Wishlist　　×</div>
+    <div class="card"><h3>Games I Like</h3><div class="muted">Wuthering Waves · Punishing: Gray Raven</div>
+      <div class="game"><img src="assets/avatar.jpg"><div><b>Wuthering Waves</b><br><span class="muted">Favorite game</span></div></div>
+      <div class="game"><img src="assets/avatar.jpg"><div><b>Punishing: Gray Raven</b><br><span class="muted">Also playing</span></div></div>
+    </div>
+    <div class="card"><h3>Favorite Game</h3><div class="game"><img src="assets/avatar.jpg"><div><b>Wuthering Waves</b><br><span class="muted">Let everyone know why this is your favorite.</span></div></div></div>
+    <div class="card"><h3>Wuthering Waves</h3><div class="muted">Ei · Server: SEA</div>
+      <div class="stats"><div class="stat"><b>80</b><span>UNION LEVEL</span></div><div class="stat"><b>29</b><span>RESONATORS</span></div><div class="stat"><b>765</b><span>ACHIEVEMENTS</span></div><div class="stat"><b>708</b><span>ECHOES</span></div><div class="stat"><b>356</b><span>LOGIN DAYS</span></div><div class="stat"><b>30</b><span>DATA BANK</span></div></div>
+    </div>
+  </aside>
+
+  <div class="music"><div class="disc">♫</div><div><b>Ei's music</b><small>Add your song later</small></div><audio controls loop><source src="assets/music.mp3" type="audio/mpeg"></audio></div>
+</main>
+</body>
+</html>
