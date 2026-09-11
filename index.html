@@ -21,8 +21,8 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100%;font-family:Inter,sans-serif;color:var(--ink);background:#07080d}
 body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:38px 14px;position:relative;overflow-x:hidden}
-.video-bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:#07080d}
-.video-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;display:block}
+.video-bg{position:fixed;inset:0;z-index:-5;overflow:hidden;background:#07080d}
+.video-bg video{width:100%;height:100%;object-fit:cover;object-position:center}
 .video-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,13,.38),rgba(7,8,13,.68))}
 .live-bg{position:fixed;inset:0;z-index:-4;overflow:hidden;pointer-events:none}
 .live-bg video{width:100%;height:100%;object-fit:cover;object-position:center;opacity:.30;filter:brightness(.55) saturate(1.05)}
@@ -58,16 +58,29 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style id="ei-video-fix">
-/* Reliable video layering */
-.video-bg { z-index: 0 !important; }
-.video-bg video { z-index: 0 !important; display:block !important; }
-.backdrop { z-index: 1 !important; }
-.stage { z-index: 2 !important; }
-.avatar { z-index: 1 !important; display:block !important; object-fit:cover !important; }
-
 /* Video 3: entire page background */
+video[src*="discord-background.mp4"] {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  object-fit: cover !important;
+  z-index: -20 !important;
+  pointer-events: none !important;
+}
+
 /* Keep the existing Discord/profile background above the page background. */
+video[src*="live-background.mp4"] {
+  pointer-events: none !important;
+}
+
 /* Video 1: animated profile/avatar */
+video[src*="profile-video.mp4"] {
+  object-fit: cover !important;
+  display: block !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
 </style>
 
 </head>
@@ -204,9 +217,9 @@ const bootLines = [
  'Microsoft Windows [Version 11.0.22631.0000]',
  '(c) Microsoft Corporation. All rights reserved.',
  '',
- 'C:\\Users\\Ei> Ei',
+ 'C:\\Users\\GIANG> Ei',
  '',
- 'C:\\Users\\Ei> profile --boot',
+ 'C:\\Users\\GIANG> profile --boot',
  '[OK] Loading personal interface...',
  '[OK] Connecting Discord presence...',
  '[OK] Preparing avatar decoration...',
@@ -218,7 +231,7 @@ const bootLines = [
  'Passion: Wuthering waves, NTE',
  'Current Mode : Quiet but online',
  '',
- 'Press Join World to enter.'
+ 'Press Enter to continue.'
 ];
 
 const termBody=document.getElementById('termBody');
@@ -332,17 +345,14 @@ wrap.addEventListener('mouseleave',()=>wrap.style.transform='');
 
 <script id="ei-video-autoplay-fix">
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.video-bg video, .live-bg video, .banner video, .avatar')
+  document.querySelectorAll('video[src*="profile-video.mp4"], video[src*="live-background.mp4"], video[src*="discord-background.mp4"]')
     .forEach(v => {
       v.muted = true;
       v.autoplay = true;
       v.loop = true;
       v.playsInline = true;
-      try {
-        v.load();
-        const p = v.play();
-        if (p) p.catch(() => {});
-      } catch (_) {}
+      const p = v.play();
+      if (p) p.catch(() => {});
     });
 });
 </script>
