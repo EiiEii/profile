@@ -24,6 +24,8 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .video-bg{position:fixed;inset:0;z-index:-5;overflow:hidden;background:#07080d}
 .video-bg video{width:100%;height:100%;object-fit:cover;object-position:center}
 .video-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,13,.38),rgba(7,8,13,.68))}
+.live-bg{position:fixed;inset:0;z-index:-4;overflow:hidden;pointer-events:none}
+.live-bg video{width:100%;height:100%;object-fit:cover;object-position:center;opacity:.30;filter:brightness(.55) saturate(1.05)}
 .backdrop{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 700px 500px at 15% 10%,rgba(255,79,184,.12),transparent 60%),radial-gradient(ellipse 700px 500px at 85% 90%,rgba(79,224,255,.10),transparent 60%)}
 .backdrop:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(ellipse 900px 700px at 50% 40%,black,transparent 75%)}
 .stage{position:relative;z-index:1;width:100%;max-width:680px;transition:opacity .6s ease,transform .6s ease}.stage.pre-boot{opacity:0;transform:translateY(12px);pointer-events:none}
@@ -67,6 +69,11 @@ video[src*="discord-background.mp4"] {
   pointer-events: none !important;
 }
 
+/* Keep the existing Discord/profile background above the page background. */
+video[src*="live-background.mp4"] {
+  pointer-events: none !important;
+}
+
 /* Video 1: animated profile/avatar */
 video[src*="profile-video.mp4"] {
   object-fit: cover !important;
@@ -83,6 +90,13 @@ video[src*="profile-video.mp4"] {
 <div class="video-bg">
   <video autoplay muted loop playsinline>
     <source src="discord-background.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!-- VIDEO 2: moving layer behind the profile card -->
+<div class="live-bg">
+  <video autoplay muted loop playsinline>
+    <source src="live-background.mp4" type="video/mp4">
   </video>
 </div>
 
@@ -104,10 +118,10 @@ video[src*="profile-video.mp4"] {
   <div class="card-border-wrap" id="cardWrap">
     <div class="card">
 
-      <!-- Banner now uses discord-background.mp4 -->
+      <!-- VIDEO 2 is also used here as the moving profile/banner layer -->
       <div class="banner">
         <video autoplay muted loop playsinline>
-          <source src="discord-background.mp4" type="video/mp4">
+          <source src="live-background.mp4" type="video/mp4">
         </video>
       </div>
 
@@ -203,9 +217,9 @@ const bootLines = [
  'Microsoft Windows [Version 11.0.22631.0000]',
  '(c) Microsoft Corporation. All rights reserved.',
  '',
- 'C:\\Users\\eiii_eiii> Ei',
+ 'C:\\Users\\GIANG> Ei',
  '',
- 'C:\\Users\\Ei> profile --boot',
+ 'C:\\Users\\GIANG> profile --boot',
  '[OK] Loading personal interface...',
  '[OK] Connecting Discord presence...',
  '[OK] Preparing avatar decoration...',
@@ -217,7 +231,7 @@ const bootLines = [
  'Passion: Wuthering waves, NTE',
  'Current Mode : Quiet but online',
  '',
- 'Press Join World to enter.'
+ 'Press Enter to continue.'
 ];
 
 const termBody=document.getElementById('termBody');
@@ -331,7 +345,7 @@ wrap.addEventListener('mouseleave',()=>wrap.style.transform='');
 
 <script id="ei-video-autoplay-fix">
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('video[src*="profile-video.mp4"], video[src*="discord-background.mp4"]')
+  document.querySelectorAll('video[src*="profile-video.mp4"], video[src*="live-background.mp4"], video[src*="discord-background.mp4"]')
     .forEach(v => {
       v.muted = true;
       v.autoplay = true;
