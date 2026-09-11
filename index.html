@@ -56,6 +56,33 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 @media(max-width:520px){body{padding:20px 10px}.stage{max-width:94vw}.header{padding:0 16px}.body{padding:16px}.footer-tabs{padding:12px 16px;font-size:9px}.terminal-body{padding:18px;font-size:11px;min-height:320px}.row{flex-direction:column}.display-name{font-size:18px}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style id="ei-video-fix">
+/* Video 3: entire page background */
+video[src*="discord-background.mp4"] {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  object-fit: cover !important;
+  z-index: -20 !important;
+  pointer-events: none !important;
+}
+
+/* Keep the existing Discord/profile background above the page background. */
+video[src*="live-background.mp4"] {
+  pointer-events: none !important;
+}
+
+/* Video 1: animated profile/avatar */
+video[src*="profile-video.mp4"] {
+  object-fit: cover !important;
+  display: block !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+</style>
+
 </head>
 <body>
 
@@ -190,9 +217,9 @@ const bootLines = [
  'Microsoft Windows [Version 11.0.22631.0000]',
  '(c) Microsoft Corporation. All rights reserved.',
  '',
- 'C:\\Users\\Ei> Ei',
+ 'C:\\Users\\GIANG> Ei',
  '',
- 'C:\\Users\\Ei> profile --boot',
+ 'C:\\Users\\GIANG> profile --boot',
  '[OK] Loading personal interface...',
  '[OK] Connecting Discord presence...',
  '[OK] Preparing avatar decoration...',
@@ -204,7 +231,7 @@ const bootLines = [
  'Passion: Wuthering waves, NTE',
  'Current Mode : Quiet but online',
  '',
- 'Press Join World to continue.'
+ 'Press Enter to continue.'
 ];
 
 const termBody=document.getElementById('termBody');
@@ -315,5 +342,20 @@ wrap.addEventListener('mousemove',e=>{
 });
 wrap.addEventListener('mouseleave',()=>wrap.style.transform='');
 </script>
+
+<script id="ei-video-autoplay-fix">
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('video[src*="profile-video.mp4"], video[src*="live-background.mp4"], video[src*="discord-background.mp4"]')
+    .forEach(v => {
+      v.muted = true;
+      v.autoplay = true;
+      v.loop = true;
+      v.playsInline = true;
+      const p = v.play();
+      if (p) p.catch(() => {});
+    });
+});
+</script>
+
 </body>
 </html>
