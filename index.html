@@ -28,7 +28,7 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
 .live-bg video{width:100%;height:100%;object-fit:cover;object-position:center;opacity:.30;filter:brightness(.55) saturate(1.05)}
 .backdrop{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 700px 500px at 15% 10%,rgba(255,79,184,.12),transparent 60%),radial-gradient(ellipse 700px 500px at 85% 90%,rgba(79,224,255,.10),transparent 60%)}
 .backdrop:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(ellipse 900px 700px at 50% 40%,black,transparent 75%)}
-.stage{position:relative;z-index:1;width:100%;max-width:680px}
+.stage{position:relative;z-index:1;width:100%;max-width:680px;transition:opacity .6s ease,transform .6s ease}.stage.pre-boot{opacity:0;transform:translateY(12px);pointer-events:none}
 .aura{position:absolute;top:-35px;left:50%;width:340px;height:340px;transform:translateX(-50%);border-radius:50%;background:conic-gradient(from 0deg,var(--accent-a),var(--accent-c),var(--accent-b),var(--accent-a));filter:blur(70px);opacity:.30;z-index:-1;animation:spin 14s linear infinite,pulse 2.4s ease-in-out infinite}
 @keyframes spin{to{transform:translateX(-50%) rotate(360deg)}}@keyframes pulse{0%,100%{opacity:.26}50%{opacity:.44}}
 .card-border-wrap{position:relative;border-radius:23px;padding:1.5px;background:transparent;box-shadow:0 0 30px -4px rgba(116,184,190,.55),0 0 70px -20px rgba(116,184,190,.3);transition:transform .35s ease;will-change:transform}
@@ -86,7 +86,7 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
   </div>
 </div>
 
-<div class="stage" id="stage">
+<div class="stage pre-boot" id="stage">
   <div class="aura"></div>
   <div class="card-border-wrap" id="cardWrap">
     <div class="card">
@@ -167,6 +167,8 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;pad
         <span>eiii_eiii</span>
       </div>
 
+      <audio id="music" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
+
       <div class="now-playing">
         <button class="np-btn" id="playBtn" title="Play music">
           <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -188,19 +190,18 @@ const bootLines = [
  'Microsoft Windows [Version 11.0.22631.0000]',
  '(c) Microsoft Corporation. All rights reserved.',
  '',
- 'C:\\Users\\EI> whoami',
- 'eiii_eiii',
+ 'C:\\Users\\GIANG> Ei',
  '',
- 'C:\\Users\\EI> profile --boot',
+ 'C:\\Users\\GIANG> profile --boot',
  '[OK] Loading personal interface...',
  '[OK] Connecting Discord presence...',
- '[OK] Preparing profile video...',
- '[OK] Mounting live backgrounds...',
+ '[OK] Preparing avatar decoration...',
+ '[OK] Mounting local music file...',
  '',
- 'Alias        : EI',
- 'Username     : eiii_eiii',
- 'Game         : Wuthering Waves',
- 'Server       : SEA',
+ 'Alias: Ei',
+ 'Style: Account boosting & streamer',
+ 'Location: Cambodia',
+ 'Passion: Wuthering waves, NTE',
  'Current Mode : Quiet but online',
  '',
  'Press Enter to continue.'
@@ -208,6 +209,7 @@ const bootLines = [
 
 const termBody=document.getElementById('termBody');
 const bootScreen=document.getElementById('bootScreen');
+const stageEl=document.getElementById('stage');
 
 function typeLine(index){
  if(index>=bootLines.length){
@@ -227,38 +229,54 @@ function typeLine(index){
  let i=0;
  const cursor=document.createElement('span');cursor.className='term-cursor';
  function step(){
-   if(i<=text.length){el.textContent=text.slice(0,i);el.appendChild(cursor);i++;setTimeout(step,9)}
-   else{el.textContent=text;setTimeout(()=>typeLine(index+1),70)}
+   if(i<=text.length){
+     el.textContent=text.slice(0,i);
+     el.appendChild(cursor);
+     i++;
+     setTimeout(step,10);
+   }else{
+     el.textContent=text;
+     setTimeout(()=>typeLine(index+1),70);
+   }
  }
  step();
 }
-const music = document.getElementById('music');
-const playBtn = document.getElementById('playBtn');
-const playIcon = document.getElementById('playIcon');
-const eq = document.getElementById('eq');
-const npFill = document.getElementById('npFill');
-const npCurrent = document.getElementById('npCurrent');
-const npTotal = document.getElementById('npTotal');
+
+const music=document.getElementById('music');
+const playBtn=document.getElementById('playBtn');
+const playIcon=document.getElementById('playIcon');
+const eq=document.getElementById('eq');
+const npFill=document.getElementById('npFill');
+const npCurrent=document.getElementById('npCurrent');
+const npTotal=document.getElementById('npTotal');
 
 function setPlayIcon(playing){
- playIcon.innerHTML = playing
+ playIcon.innerHTML=playing
    ? '<path d="M7 5h4v14H7zm6 0h4v14h-4z"/>'
    : '<path d="M8 5v14l11-7z"/>';
- eq.classList.toggle('paused', !playing);
+ eq.classList.toggle('paused',!playing);
 }
 
 function formatTime(sec){
  if(!Number.isFinite(sec)) return '0:00';
- const m=Math.floor(sec/60), s=Math.floor(sec%60);
+ const m=Math.floor(sec/60),s=Math.floor(sec%60);
  return m+':'+String(s).padStart(2,'0');
 }
 
 function enterWorld(){
  bootScreen.classList.add('hide');
+ stageEl.classList.remove('pre-boot');
  setTimeout(()=>bootScreen.style.display='none',550);
- music.volume = 0.45;
+ music.volume=0.45;
  music.play().then(()=>setPlayIcon(true)).catch(()=>setPlayIcon(false));
 }
+
+document.addEventListener('keydown',e=>{
+ if(e.key==='Enter' && !bootScreen.classList.contains('hide')){
+   const btn=document.querySelector('.join-btn');
+   if(btn) enterWorld();
+ }
+});
 
 playBtn.addEventListener('click',()=>{
  if(music.paused){
@@ -270,11 +288,11 @@ playBtn.addEventListener('click',()=>{
 });
 
 music.addEventListener('loadedmetadata',()=>{
- npTotal.textContent = formatTime(music.duration);
+ npTotal.textContent=formatTime(music.duration);
 });
 music.addEventListener('timeupdate',()=>{
- npCurrent.textContent = formatTime(music.currentTime);
- npFill.style.width = music.duration ? (music.currentTime/music.duration*100)+'%' : '0%';
+ npCurrent.textContent=formatTime(music.currentTime);
+ npFill.style.width=music.duration ? (music.currentTime/music.duration*100)+'%' : '0%';
 });
 music.addEventListener('play',()=>setPlayIcon(true));
 music.addEventListener('pause',()=>setPlayIcon(false));
