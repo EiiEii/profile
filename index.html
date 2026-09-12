@@ -410,8 +410,9 @@ function updateBassGlow() {
 
   // Apply to aura
   if (aura) {
-    aura.style.opacity = 0.28 + intensity * 0.45;
-    aura.style.filter = `blur(${70 + intensity * 30}px)`;
+  aura.style.animationPlayState = 'paused';
+  aura.style.opacity = 0.28 + intensity * 0.45;
+  aura.style.filter = `blur(${70 + intensity * 30}px)`;
   }
 
   // Apply to card border glow
@@ -431,6 +432,14 @@ music.addEventListener('play', () => {
   if (audioCtx.state === 'suspended') {
     audioCtx.resume();
   }
+  updateBassGlow();
+});
+
+music.addEventListener('pause', () => {
+  if (aura) {
+    aura.style.animationPlayState = 'running';
+  }
+});
   updateBassGlow();
 });
 function tick(){
