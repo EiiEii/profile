@@ -98,7 +98,7 @@ video[src*="profile-video.mp4"] {
 
 <!-- VIDEO 2: moving layer behind the profile card -->
 <div class="live-bg">
-  <video autoplay muted loop playsinline>
+  <video id="liveVideo" muted loop playsinline>
     <source src="https://stream.vidhosting.in/videos/26cb980d.mp4" type="video/mp4">
   </video>
 </div>
@@ -204,7 +204,7 @@ video[src*="profile-video.mp4"] {
         <span>𝐞𝐢𝐢𝐢_𝐞𝐢𝐢𝐢</span>
       </div>
 
-      <audio id="music" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
+      <audio id="music"></audio>
 
       <div class="now-playing">
         <button class="np-btn" id="playBtn" title="Play music">
@@ -305,12 +305,9 @@ function enterWorld(){
  bootScreen.classList.add('hide');
  stageEl.classList.remove('pre-boot');
  setTimeout(()=>bootScreen.style.display='none',550);
- music.volume=0.45;
- music.play().then(()=>{
-   liveVideo.play().catch(()=>{});
-   setPlayIcon(true);
- }).catch(()=>setPlayIcon(false));
-}
+ liveVideo.muted=false;
+liveVideo.volume=0.45;
+liveVideo.play().then(()=>setPlayIcon(true)).catch(()=>setPlayIcon(false));
 
 document.addEventListener('keydown',e=>{
  if(e.key==='Enter' && !bootScreen.classList.contains('hide')){
@@ -320,11 +317,9 @@ document.addEventListener('keydown',e=>{
 });
 
 playBtn.addEventListener('click',()=>{
-  if(music.paused){
-    music.play().then(()=>setPlayIcon(true)).catch(()=>{});
-    liveVideo.play().catch(()=>{});
+  if(liveVideo.paused){
+    liveVideo.play().then(()=>setPlayIcon(true)).catch(()=>{});
   }else{
-    music.pause();
     liveVideo.pause();
     setPlayIcon(false);
   }
