@@ -98,7 +98,7 @@ video[src*="profile-video.mp4"] {
 
 <!-- VIDEO 2: moving layer behind the profile card -->
 <div class="live-bg">
-  <video muted loop playsinline>
+  <video id="liveVideo" muted loop playsinline>
     <source src="https://stream.vidhosting.in/videos/26cb980d.mp4" type="video/mp4">
   </video>
 </div>
@@ -308,6 +308,7 @@ function enterWorld(){
  liveVideo.muted=false;
 liveVideo.volume=0.45;
 liveVideo.play().then(()=>setPlayIcon(true)).catch(()=>setPlayIcon(false));
+}
 
 document.addEventListener('keydown',e=>{
  if(e.key==='Enter' && !bootScreen.classList.contains('hide')){
