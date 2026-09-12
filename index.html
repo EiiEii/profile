@@ -326,16 +326,16 @@ playBtn.addEventListener('click',()=>{
   }
 });
 
-music.addEventListener('loadedmetadata',()=>{
- npTotal.textContent=formatTime(music.duration);
+liveVideo.addEventListener('loadedmetadata',()=>{
+ npTotal.textContent=formatTime(liveVideo.duration);
 });
-music.addEventListener('timeupdate',()=>{
- npCurrent.textContent=formatTime(music.currentTime);
- npFill.style.width=music.duration ? (music.currentTime/music.duration*100)+'%' : '0%';
+liveVideo.addEventListener('timeupdate',()=>{
+ npCurrent.textContent=formatTime(liveVideo.currentTime);
+ npFill.style.width=liveVideo.duration ? (liveVideo.currentTime/liveVideo.duration*100)+'%' : '0%';
 });
-music.addEventListener('play',()=>setPlayIcon(true));
-music.addEventListener('pause',()=>setPlayIcon(false));
-music.addEventListener('ended',()=>setPlayIcon(false));
+liveVideo.addEventListener('play',()=>setPlayIcon(true));
+liveVideo.addEventListener('pause',()=>setPlayIcon(false));
+liveVideo.addEventListener('ended',()=>setPlayIcon(false));
 
 typeLine(0);
 
