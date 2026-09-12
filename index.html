@@ -376,6 +376,63 @@ music.addEventListener('ended', () => setPlayIcon(false));
 }
 typeLine(0);
 
+ // ===== Soft Bass Glow Pulse =====
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioCtx.createAnalyser();
+analyser.fftSize = 256;
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
+
+const source = audioCtx.createMediaElementSource(music);
+source.connect(analyser);
+analyser.connect(audioCtx.destination);
+
+const cardWrap = document.getElementById('cardWrap');
+const aura = document.querySelector('.aura');
+
+function updateBassGlow() {
+  if (music.paused) {
+    requestAnimationFrame(updateBassGlow);
+    return;
+  }
+
+  analyser.getByteFrequencyData(dataArray);
+
+  // Take only the low frequencies (bass)
+  let bass = 0;
+  for (let i = 0; i < 8; i++) {
+    bass += dataArray[i];
+  }
+  bass = bass / 8 / 255; // normalize 0 → 1
+
+  // Make the effect stronger
+  const intensity = Math.pow(bass, 1.4);
+
+  // Apply to aura
+  if (aura) {
+    aura.style.opacity = 0.28 + intensity * 0.45;
+    aura.style.filter = `blur(${70 + intensity * 30}px)`;
+  }
+
+  // Apply to card border glow
+  if (cardWrap) {
+    const glow = 30 + intensity * 55;
+    cardWrap.style.boxShadow = `
+      0 0 ${glow}px -4px rgba(116,184,190,${0.45 + intensity * 0.4}),
+      0 0 ${glow * 2}px -20px rgba(255,79,184,${0.25 + intensity * 0.35})
+    `;
+  }
+
+  requestAnimationFrame(updateBassGlow);
+}
+
+// Start the visualizer when music plays
+music.addEventListener('play', () => {
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  updateBassGlow();
+});
 function tick(){
  const now=new Date();
  const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Phnom_Penh',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(now);
