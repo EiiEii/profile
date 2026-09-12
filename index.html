@@ -338,9 +338,9 @@ liveVideo.addEventListener('pause',()=>setPlayIcon(false));
 liveVideo.addEventListener('ended',()=>setPlayIcon(false));
 
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible' && !music.paused){
-    music.play().catch(()=>{});
-  }
+ if(document.visibilityState==='visible' && !music.paused){
+  music.play().catch(()=>{});
+ }
 });
 
 if(sessionStorage.getItem('eiWorldEntered')==='1'){
@@ -367,19 +367,7 @@ wrap.addEventListener('mousemove',e=>{
 wrap.addEventListener('mouseleave',()=>wrap.style.transform='');
 </script>
 
-<script id="ei-video-autoplay-fix">
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('video[src*="profile-video.mp4"], video[src*="discord-background.mp4"]')
-    .forEach(v => {
-      v.muted = true;
-      v.autoplay = true;
-      v.loop = true;
-      v.playsInline = true;
-      const p = v.play();
-      if (p) p.catch(() => {});
-    });
-});
-</script>
+
 
 </body>
 </html>
