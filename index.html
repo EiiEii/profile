@@ -375,8 +375,76 @@ music.addEventListener('ended', () => setPlayIcon(false));
   });
 }
 typeLine(0);
+// ===== Soft Bass Glow Pulse =====
+let audioCtx, analyser, dataArray, sourceConnected = false;
 
- // ===== Soft Bass Glow Pulse =====
+const cardWrap = document.getElementById('cardWrap');
+const aura = document.querySelector('.aura');
+
+function setupAudioAnalyser() {
+  if (sourceConnected) return;
+
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 256;
+  dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+  const source = audioCtx.createMediaElementSource(music);
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+  sourceConnected = true;
+}
+
+function updateBassGlow() {
+  if (!analyser || music.paused) {
+    requestAnimationFrame(updateBassGlow);
+    return;
+  }
+
+  analyser.getByteFrequencyData(dataArray);
+
+  let bass = 0;
+  for (let i = 0; i < 8; i++) {
+    bass += dataArray[i];
+  }
+  bass = bass / 8 / 255;
+
+  const intensity = Math.pow(bass, 1.4);
+
+  if (aura) {
+    aura.style.animationPlayState = 'paused';
+    aura.style.opacity = 0.28 + intensity * 0.45;
+    aura.style.filter = `blur(${70 + intensity * 30}px)`;
+  }
+
+  if (cardWrap) {
+    const glow = 30 + intensity * 55;
+    cardWrap.style.boxShadow = `
+      0 0 ${glow}px -4px rgba(116,184,190,${0.45 + intensity * 0.4}),
+      0 0 ${glow * 2}px -20px rgba(255,79,184,${0.25 + intensity * 0.35})
+    `;
+  }
+
+  requestAnimationFrame(updateBassGlow);
+}
+
+music.addEventListener('play', async () => {
+  try {
+    setupAudioAnalyser();
+    if (audioCtx.state === 'suspended') {
+      await audioCtx.resume();
+    }
+    updateBassGlow();
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+music.addEventListener('pause', () => {
+  if (aura) {
+    aura.style.animationPlayState = 'running';
+  }
+});
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioCtx.createAnalyser();
 analyser.fftSize = 256;
