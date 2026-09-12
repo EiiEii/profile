@@ -204,7 +204,7 @@ video[src*="profile-video.mp4"] {
         <span>𝐞𝐢𝐢𝐢_𝐞𝐢𝐢𝐢</span>
       </div>
 
-      <audio id="music"></audio>
+      <audio id="music" loop preload="auto"><source src="https://stream.vidhosting.in/videos/26cb980d.mp4" type="video/mp4"></audio>
 
       <div class="now-playing">
         <button class="np-btn" id="playBtn" title="Play music">
@@ -306,9 +306,8 @@ function enterWorld(){
  bootScreen.classList.add('hide');
  stageEl.classList.remove('pre-boot');
  setTimeout(()=>bootScreen.style.display='none',550);
- liveVideo.muted=false;
- liveVideo.volume=0.45;
- liveVideo.play().then(()=>setPlayIcon(true)).catch(()=>setPlayIcon(false));
+ music.volume=0.45;
+ music.play().then(()=>setPlayIcon(true)).catch(()=>setPlayIcon(false));
 }
 
 document.addEventListener('keydown',e=>{
@@ -319,28 +318,28 @@ document.addEventListener('keydown',e=>{
 });
 
 playBtn.addEventListener('click',()=>{
-  if(liveVideo.paused){
-    liveVideo.play().then(()=>setPlayIcon(true)).catch(()=>{});
-  }else{
-    liveVideo.pause();
-    setPlayIcon(false);
-  }
+ if(music.paused){
+  music.play().then(()=>setPlayIcon(true)).catch(()=>{});
+ }else{
+  music.pause();
+  setPlayIcon(false);
+ }
 });
 
-liveVideo.addEventListener('loadedmetadata',()=>{
- npTotal.textContent=formatTime(liveVideo.duration);
+music.addEventListener('loadedmetadata',()=>{
+ npTotal.textContent=formatTime(music.duration);
 });
-liveVideo.addEventListener('timeupdate',()=>{
- npCurrent.textContent=formatTime(liveVideo.currentTime);
- npFill.style.width=liveVideo.duration ? (liveVideo.currentTime/liveVideo.duration*100)+'%' : '0%';
+music.addEventListener('timeupdate',()=>{
+ npCurrent.textContent=formatTime(music.currentTime);
+ npFill.style.width=music.duration ? (music.currentTime/music.duration*100)+'%' : '0%';
 });
 liveVideo.addEventListener('play',()=>setPlayIcon(true));
 liveVideo.addEventListener('pause',()=>setPlayIcon(false));
 liveVideo.addEventListener('ended',()=>setPlayIcon(false));
 
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible' && !liveVideo.paused){
-    liveVideo.play().catch(()=>{});
+  if(document.visibilityState==='visible' && !music.paused){
+    music.play().catch(()=>{});
   }
 });
 
