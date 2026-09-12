@@ -123,7 +123,7 @@ video[src*="profile-video.mp4"] {
 
       <!-- VIDEO 2 is also used here as the moving profile/banner layer -->
       <div class="banner">
-        <video autoplay muted loop playsinline>
+        <video id="liveVideo" muted loop playsinline>
           <source src="https://stream.vidhosting.in/videos/26cb980d.mp4" type="video/mp4">
         </video>
       </div>
@@ -280,6 +280,7 @@ function typeLine(index){
 }
 
 const music=document.getElementById('music');
+const liveVideo=document.getElementById('liveVideo');
 const playBtn=document.getElementById('playBtn');
 const playIcon=document.getElementById('playIcon');
 const eq=document.getElementById('eq');
@@ -316,12 +317,14 @@ document.addEventListener('keydown',e=>{
 });
 
 playBtn.addEventListener('click',()=>{
- if(music.paused){
-   music.play().then(()=>setPlayIcon(true)).catch(()=>{});
- }else{
-   music.pause();
-   setPlayIcon(false);
- }
+  if(music.paused){
+    music.play().then(()=>setPlayIcon(true)).catch(()=>{});
+    liveVideo.play().catch(()=>{});
+  }else{
+    music.pause();
+    liveVideo.pause();
+    setPlayIcon(false);
+  }
 });
 
 music.addEventListener('loadedmetadata',()=>{
@@ -355,7 +358,7 @@ wrap.addEventListener('mouseleave',()=>wrap.style.transform='');
 
 <script id="ei-video-autoplay-fix">
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('video[src*="profile-video.mp4"], video[src*="live-background.mp4"], video[src*="discord-background.mp4"]')
+  document.querySelectorAll('video[src*="profile-video.mp4"], video[src*="discord-background.mp4"]')
     .forEach(v => {
       v.muted = true;
       v.autoplay = true;
