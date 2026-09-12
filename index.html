@@ -98,7 +98,7 @@ video[src*="profile-video.mp4"] {
 
 <!-- VIDEO 2: moving layer behind the profile card -->
 <div class="live-bg">
-  <video id="liveVideo" muted loop playsinline>
+  <video muted loop playsinline>
     <source src="https://stream.vidhosting.in/videos/26cb980d.mp4" type="video/mp4">
   </video>
 </div>
@@ -336,6 +336,12 @@ liveVideo.addEventListener('timeupdate',()=>{
 liveVideo.addEventListener('play',()=>setPlayIcon(true));
 liveVideo.addEventListener('pause',()=>setPlayIcon(false));
 liveVideo.addEventListener('ended',()=>setPlayIcon(false));
+
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible' && !liveVideo.paused){
+    liveVideo.play().catch(()=>{});
+  }
+});
 
 typeLine(0);
 
