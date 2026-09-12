@@ -98,7 +98,7 @@ video[src*="profile-video.mp4"] {
 
 <!-- VIDEO 2: moving layer behind the profile card -->
 <div class="live-bg">
-  <video muted loop playsinline>
+  <video id="liveVideo" muted loop playsinline>
     <source src="https://stream.vidhosting.in/videos/26cb980d.mp4" type="video/mp4">
   </video>
 </div>
@@ -204,7 +204,7 @@ video[src*="profile-video.mp4"] {
         <span>𝐞𝐢𝐢𝐢_𝐞𝐢𝐢𝐢</span>
       </div>
 
-      <audio id="music" loop preload="auto"><source src="https://stream.vidhosting.in/videos/26cb980d.mp4" type="video/mp4"></audio>
+      <audio id="music"></audio>
 
       <div class="now-playing">
         <button class="np-btn" id="playBtn" title="Play music">
@@ -302,12 +302,12 @@ function formatTime(sec){
 }
 
 function enterWorld(){
- sessionStorage.setItem('eiWorldEntered','1');
  bootScreen.classList.add('hide');
  stageEl.classList.remove('pre-boot');
  setTimeout(()=>bootScreen.style.display='none',550);
- music.volume=0.45;
- music.play().then(()=>setPlayIcon(true)).catch(()=>setPlayIcon(false));
+ liveVideo.muted=false;
+liveVideo.volume=0.45;
+liveVideo.play().then(()=>setPlayIcon(true)).catch(()=>setPlayIcon(false));
 }
 
 document.addEventListener('keydown',e=>{
@@ -318,12 +318,12 @@ document.addEventListener('keydown',e=>{
 });
 
 playBtn.addEventListener('click',()=>{
- if(music.paused){
-  music.play().then(()=>setPlayIcon(true)).catch(()=>{});
- }else{
-  music.pause();
-  setPlayIcon(false);
- }
+  if(liveVideo.paused){
+    liveVideo.play().then(()=>setPlayIcon(true)).catch(()=>{});
+  }else{
+    liveVideo.pause();
+    setPlayIcon(false);
+  }
 });
 
 music.addEventListener('loadedmetadata',()=>{
@@ -333,23 +333,11 @@ music.addEventListener('timeupdate',()=>{
  npCurrent.textContent=formatTime(music.currentTime);
  npFill.style.width=music.duration ? (music.currentTime/music.duration*100)+'%' : '0%';
 });
-liveVideo.addEventListener('play',()=>setPlayIcon(true));
-liveVideo.addEventListener('pause',()=>setPlayIcon(false));
-liveVideo.addEventListener('ended',()=>setPlayIcon(false));
+music.addEventListener('play',()=>setPlayIcon(true));
+music.addEventListener('pause',()=>setPlayIcon(false));
+music.addEventListener('ended',()=>setPlayIcon(false));
 
-document.addEventListener('visibilitychange',()=>{
- if(document.visibilityState==='visible' && !music.paused){
-  music.play().catch(()=>{});
- }
-});
-
-if(sessionStorage.getItem('eiWorldEntered')==='1'){
- bootScreen.classList.add('hide');
- stageEl.classList.remove('pre-boot');
- setTimeout(()=>bootScreen.style.display='none',550);
-}else{
- typeLine(0);
-}
+typeLine(0);
 
 function tick(){
  const now=new Date();
@@ -367,7 +355,19 @@ wrap.addEventListener('mousemove',e=>{
 wrap.addEventListener('mouseleave',()=>wrap.style.transform='');
 </script>
 
-
+<script id="ei-video-autoplay-fix">
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('video[src*="profile-video.mp4"], video[src*="discord-background.mp4"]')
+    .forEach(v => {
+      v.muted = true;
+      v.autoplay = true;
+      v.loop = true;
+      v.playsInline = true;
+      const p = v.play();
+      if (p) p.catch(() => {});
+    });
+});
+</script>
 
 </body>
 </html>
