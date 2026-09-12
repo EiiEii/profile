@@ -302,12 +302,13 @@ function formatTime(sec){
 }
 
 function enterWorld(){
+ sessionStorage.setItem('eiWorldEntered','1');
  bootScreen.classList.add('hide');
  stageEl.classList.remove('pre-boot');
  setTimeout(()=>bootScreen.style.display='none',550);
  liveVideo.muted=false;
-liveVideo.volume=0.45;
-liveVideo.play().then(()=>setPlayIcon(true)).catch(()=>setPlayIcon(false));
+ liveVideo.volume=0.45;
+ liveVideo.play().then(()=>setPlayIcon(true)).catch(()=>setPlayIcon(false));
 }
 
 document.addEventListener('keydown',e=>{
@@ -343,7 +344,13 @@ document.addEventListener('visibilitychange',()=>{
   }
 });
 
-typeLine(0);
+if(sessionStorage.getItem('eiWorldEntered')==='1'){
+ bootScreen.classList.add('hide');
+ stageEl.classList.remove('pre-boot');
+ setTimeout(()=>bootScreen.style.display='none',550);
+}else{
+ typeLine(0);
+}
 
 function tick(){
  const now=new Date();
