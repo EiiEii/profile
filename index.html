@@ -281,64 +281,92 @@ function typeLine(index){
  step();
 }
 
-const music=document.getElementById('music');
-const liveVideo=document.querySelector('.banner video');
-const playBtn=document.getElementById('playBtn');
-const playIcon=document.getElementById('playIcon');
-const eq=document.getElementById('eq');
-const npFill=document.getElementById('npFill');
-const npCurrent=document.getElementById('npCurrent');
-const npTotal=document.getElementById('npTotal');
+const music = document.getElementById('music');
+const liveVideo = document.querySelector('.banner video');
+const playBtn = document.getElementById('playBtn');
+const playIcon = document.getElementById('playIcon');
+const eq = document.getElementById('eq');
+const npFill = document.getElementById('npFill');
+const npCurrent = document.getElementById('npCurrent');
+const npTotal = document.getElementById('npTotal');
 
-function setPlayIcon(playing){
- playIcon.innerHTML=playing
-   ? '<path d="M7 5h4v14H7zm6 0h4v14h-4z"/>'
-   : '<path d="M8 5v14l11-7z"/>';
- eq.classList.toggle('paused',!playing);
+// Keep visual video always muted
+if (liveVideo) {
+  liveVideo.muted = true;
+  liveVideo.volume = 0;
 }
 
-function formatTime(sec){
- if(!Number.isFinite(sec)) return '0:00';
- const m=Math.floor(sec/60),s=Math.floor(sec%60);
- return m+':'+String(s).padStart(2,'0');
+function setPlayIcon(playing) {
+  playIcon.innerHTML = playing
+    ? '<path d="M7 5h4v14H7zm6 0h4v14h-4z"/>'
+    : '<path d="M8 5v14l11-7z"/>';
+  eq.classList.toggle('paused', !playing);
 }
 
-function enterWorld(){
- bootScreen.classList.add('hide');
- stageEl.classList.remove('pre-boot');
- setTimeout(()=>bootScreen.style.display='none',550);
- liveVideo.muted=false;
-liveVideo.volume=0.45;
-liveVideo.play().then(()=>setPlayIcon(true)).catch(()=>setPlayIcon(false));
+function formatTime(sec) {
+  if (!Number.isFinite(sec)) return '0:00';
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return m + ':' + String(s).padStart(2, '0');
 }
 
-document.addEventListener('keydown',e=>{
- if(e.key==='Enter' && !bootScreen.classList.contains('hide')){
-   const btn=document.querySelector('.join-btn');
-   if(btn) enterWorld();
- }
-});
+function enterWorld() {
+  bootScreen.classList.add('hide');
+  stageEl.classList.remove('pre-boot');
+  setTimeout(() => bootScreen.style.display = 'none', 550);
 
-playBtn.addEventListener('click',()=>{
-  if(liveVideo.paused){
-    liveVideo.play().then(()=>setPlayIcon(true)).catch(()=>{});
-  }else{
-    liveVideo.pause();
+  // Start visual video (muted)
+  if (liveVideo) {
+    liveVideo.muted = true;
+    liveVideo.play().catch(() => {});
+  }
+
+  // Start real music
+  music.volume = 0.45;
+  music.play()
+    .then(() => setPlayIcon(true))
+    .catch(() => setPlayIcon(false));
+}
+
+playBtn.addEventListener('click', () => {
+  if (music.paused) {
+    music.play().then(() => setPlayIcon(true)).catch(() => {});
+  } else {
+    music.pause();
     setPlayIcon(false);
   }
 });
 
-liveVideo.addEventListener('loadedmetadata',()=>{
- npTotal.textContent=formatTime(liveVideo.duration);
+// Progress bar now uses the audio element
+music.addEventListener('loadedmetadata', () => {
+  npTotal.textContent = formatTime(music.duration);
 });
-liveVideo.addEventListener('timeupdate',()=>{
- npCurrent.textContent=formatTime(liveVideo.currentTime);
- npFill.style.width=liveVideo.duration ? (liveVideo.currentTime/liveVideo.duration*100)+'%' : '0%';
+music.addEventListener('timeupdate', () => {
+  npCurrent.textContent = formatTime(music.currentTime);
+  npFill.style.width = music.duration
+    ? (music.currentTime / music.duration * 100) + '%'
+    : '0%';
 });
-liveVideo.addEventListener('play',()=>setPlayIcon(true));
-liveVideo.addEventListener('pause',()=>setPlayIcon(false));
-liveVideo.addEventListener('ended',()=>setPlayIcon(false));
+music.addEventListener('play', () => setPlayIcon(true));
+music.addEventListener('pause', () => setPlayIcon(false));
+music.addEventListener('ended', () => setPlayIcon(false));
 
+ if ('mediaSession' in navigator) {
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: 'Saving Light',
+    artist: 'Ei',
+    album: 'Profile'
+  });
+
+  navigator.mediaSession.setActionHandler('play', () => {
+    music.play();
+    setPlayIcon(true);
+  });
+  navigator.mediaSession.setActionHandler('pause', () => {
+    music.pause();
+    setPlayIcon(false);
+  });
+}
 typeLine(0);
 
 function tick(){
