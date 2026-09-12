@@ -305,9 +305,9 @@ function enterWorld(){
  bootScreen.classList.add('hide');
  stageEl.classList.remove('pre-boot');
  setTimeout(()=>bootScreen.style.display='none',550);
- music.muted=false;
- music.volume=0.45;
- music.play().then(()=>setPlayIcon(true)).catch(()=>setPlayIcon(false));
+ liveVideo.muted=false;
+liveVideo.volume=0.45;
+liveVideo.play().then(()=>setPlayIcon(true)).catch(()=>setPlayIcon(false));
 }
 
 document.addEventListener('keydown',e=>{
