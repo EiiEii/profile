@@ -90,8 +90,8 @@ video[src*="profile-video.mp4"] {
 <body>
 
 <!-- VIDEO 3: whole Discord/page background -->
-<div class="banner">
-  <video id="liveVideo" muted loop playsinline>
+<div class="live-bg">
+  <video id="liveVideo" loop playsinline>
     <source src="https://stream.vidhosting.in/videos/c7d0d994.mp4" type="video/mp4">
   </video>
 </div>
@@ -310,15 +310,15 @@ function formatTime(sec) {
   return m + ':' + String(s).padStart(2, '0');
 }
 
-function enterWorld() {
+function enterWorld(){
   bootScreen.classList.add('hide');
   stageEl.classList.remove('pre-boot');
-  setTimeout(() => bootScreen.style.display = 'none', 550);
+  setTimeout(()=>bootScreen.style.display='none',550);
 
   liveVideo.muted = false;
-liveVideo.volume = 0.45;
-liveVideo.play();
-  }
+  liveVideo.volume = 0.45;
+  liveVideo.play();
+}
 
   // Start real music
   music.volume = 0.45;
